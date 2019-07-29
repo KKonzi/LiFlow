@@ -8,8 +8,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "hoist-non-react-statics": "^3.3.0",
     "react": "16.8.6",
-    "react-native": "0.60.4"
+    "react-native": "0.60.4",
+    "react-native-calendars": "^1.200.0"
   },
   "devDependencies": {
     "@babel/core": "7.5.5",
