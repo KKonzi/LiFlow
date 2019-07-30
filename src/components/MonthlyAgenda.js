@@ -6,26 +6,59 @@ import {
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
 
+const monthToString = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec',
+};
+
 export default class MonthlyAgenda extends Component {
     constructor(props) {
         super(props);
+
+        let nowDate = new Date();
         this.state = {
+            focusYear: nowDate.getFullYear(),
+            focusMonth: monthToString[nowDate.getMonth()+1],
             items: {}
+
         };
     }
 
     render() {
         return (
-            <Agenda
-                items={this.state.items}
-                loadItemsForMonth={this.loadItems.bind(this)}
-                // selected={'2019-07-21'}
-                renderItem={this.renderItem.bind(this)}
-                renderEmptyDate={this.renderEmptyDate.bind(this)}
-                rowHasChanged={this.rowHasChanged.bind(this)}
-                style={{marginTop: 30}}
-                markedDates={{}}
-            />
+            <View style={styles.container}>
+                <View style={styles.topNav}>
+                    <Text style={styles.topNavYear}>{this.state.focusYear}</Text>
+                    <Text style={styles.topNavMonth}>{this.state.focusMonth}</Text>
+                </View>
+                <Agenda
+                    items={this.state.items}
+                    loadItemsForMonth={this.loadItems.bind(this)}
+                    renderItem={this.renderItem.bind(this)}
+                    renderEmptyDate={this.renderEmptyDate.bind(this)}
+                    rowHasChanged={this.rowHasChanged.bind(this)}
+                    markedDates={{}}
+
+                    onDayPress={(day) => {
+                        this.state.focusYear = day.year;
+                        this.state.focusMonth = monthToString[day.month];
+                    }}
+                    onDayChange={(day) => {
+                        this.state.focusYear = day.year;
+                        this.state.focusMonth = monthToString[day.month];
+                    }}
+                />
+            </View>
         );
     }
 
@@ -77,6 +110,29 @@ export default class MonthlyAgenda extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        flexDirection: "column",
+        marginTop: 35
+    },
+
+    topNav: {
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        height: 65,
+        // backgroundColor: 'lightgrey',
+    },
+    topNavYear: {
+        fontWeight: '500',
+        marginBottom: -8
+    },
+    topNavMonth: {
+        fontSize: 48,
+        color: '#99BDDD',
+        fontWeight: '700'
+    },
+
     item: {
         backgroundColor: 'white',
         flex: 1,
