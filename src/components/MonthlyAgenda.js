@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {
     Text,
     View,
+    Image,
+    TouchableHighlight,
     StyleSheet
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
@@ -28,9 +30,8 @@ export default class MonthlyAgenda extends Component {
         let nowDate = new Date();
         this.state = {
             focusYear: nowDate.getFullYear(),
-            focusMonth: monthToString[nowDate.getMonth()+1],
+            focusMonth: nowDate.getMonth()+1,
             items: {}
-
         };
     }
 
@@ -38,8 +39,34 @@ export default class MonthlyAgenda extends Component {
         return (
             <View style={styles.container}>
                 <View style={styles.topNav}>
-                    <Text style={styles.topNavYear}>{this.state.focusYear}</Text>
-                    <Text style={styles.topNavMonth}>{this.state.focusMonth}</Text>
+                    <View>
+                        <TouchableHighlight
+                            onPress={() => console.log('touch'.this)}
+                            underlayColor='rgba(255,255,255,0.9)'
+                        >
+                            <Image
+                                source={require('../asset/menu.png')}
+                                style={styles.topNavIcon}
+                                width={25} height={25}
+                            />
+                        </TouchableHighlight>
+                    </View>
+                    <View style={styles.topNavDate}>
+                        <Text style={styles.topNavDateYear}>{this.state.focusYear}</Text>
+                        <Text style={styles.topNavDateMonth}>{monthToString[this.state.focusMonth]}</Text>
+                    </View>
+                    <View>
+                        <TouchableHighlight
+                            onPress={() => console.log('touch'.this)}
+                            underlayColor='rgba(255,255,255,0.9)'
+                        >
+                            <Image
+                                source={require('../asset/search.png')}
+                                style={styles.topNavIcon}
+                                width={28} height={28}
+                            />
+                        </TouchableHighlight>
+                    </View>
                 </View>
                 <Agenda
                     items={this.state.items}
@@ -49,13 +76,20 @@ export default class MonthlyAgenda extends Component {
                     rowHasChanged={this.rowHasChanged.bind(this)}
                     markedDates={{}}
 
+                    pastScrollRange={20}
+                    futureScrollRange={20}
+
                     onDayPress={(day) => {
-                        this.state.focusYear = day.year;
-                        this.state.focusMonth = monthToString[day.month];
+                        if(this.state.focusYear !== day.year) this.state.focusYear = day.year;
+                        if(this.state.focusMonth !== day.month) this.state.focusMonth = day.month;
                     }}
                     onDayChange={(day) => {
-                        this.state.focusYear = day.year;
-                        this.state.focusMonth = monthToString[day.month];
+                        if(this.state.focusYear !== day.year) this.state.focusYear = day.year;
+                        if(this.state.focusMonth !== day.month) this.state.focusMonth = day.month;
+                    }}
+
+                    theme={{
+                        agendaTodayColor: '#99BDDD'
                     }}
                 />
             </View>
@@ -68,14 +102,10 @@ export default class MonthlyAgenda extends Component {
                 const time = day.timestamp + i * 24 * 60 * 60 * 1000;
                 const strTime = this.timeToString(time);
                 if (!this.state.items[strTime]) {
-                    this.state.items[strTime] = [];
-                    const numItems = 1;
-                    for (let j = 0; j < numItems; j++) {
-                        this.state.items[strTime].push({
-                            name: 'Item for ' + strTime,
-                            height: 80
-                        });
-                    }
+                    this.state.items[strTime] = [{
+                        name: 'Item for ' + strTime,
+                        height: 80
+                    }];
                 }
             }
 
@@ -117,20 +147,32 @@ const styles = StyleSheet.create({
     },
 
     topNav: {
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
+        flexDirection: "row",
+        justifyContent: "space-between",
         height: 65,
         // backgroundColor: 'lightgrey',
     },
-    topNavYear: {
-        fontWeight: '500',
-        marginBottom: -8
+
+    topNavDate: {
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center"
     },
-    topNavMonth: {
+    topNavDateYear: {
+        fontWeight: '500',
+        marginBottom: -8,
+        color: '#2B2B2B'
+    },
+    topNavDateMonth: {
         fontSize: 48,
         color: '#99BDDD',
         fontWeight: '700'
+    },
+
+    topNavIcon: {
+        margin: 20,
+        justifyContent: "center",
+        alignItems: "center"
     },
 
     item: {
@@ -145,5 +187,5 @@ const styles = StyleSheet.create({
         height: 15,
         flex:1,
         paddingTop: 30
-    }
+    },
 });
