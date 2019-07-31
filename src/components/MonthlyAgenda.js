@@ -7,6 +7,7 @@ import {
     StyleSheet
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
+import DayCard from './DayCard.js';
 
 const monthToString = {
     1: 'Jan',
@@ -119,7 +120,7 @@ export default class MonthlyAgenda extends Component {
 
     renderItem(item) {
         return (
-            <View style={[styles.item, {height: item.height}]}><Text>{item.name}</Text></View>
+            <View style={[styles.dayCard, {height: item.height}]}><DayCard/></View>
         );
     }
 
@@ -175,11 +176,11 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
 
-    item: {
+    dayCard: {
         backgroundColor: 'white',
         flex: 1,
+        flexWrap: 'wrap',
         borderRadius: 5,
-        padding: 10,
         marginRight: 10,
         marginTop: 17
     },
