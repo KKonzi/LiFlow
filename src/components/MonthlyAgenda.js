@@ -4,6 +4,7 @@ import {
     View,
     Image,
     TouchableHighlight,
+    TouchableOpacity,
     StyleSheet
 } from 'react-native';
 import {Agenda} from 'react-native-calendars';
@@ -41,8 +42,8 @@ export default class MonthlyAgenda extends Component {
             <View style={styles.container}>
                 <View style={styles.topNav}>
                     <View>
-                        <TouchableHighlight
-                            onPress={() => console.log('touch'.this)}
+                        <TouchableOpacity
+                            onPress={() => console.log('touch',this)}
                             underlayColor='rgba(255,255,255,0.9)'
                         >
                             <Image
@@ -50,15 +51,15 @@ export default class MonthlyAgenda extends Component {
                                 style={styles.topNavIcon}
                                 width={25} height={25}
                             />
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                     </View>
                     <View style={styles.topNavDate}>
                         <Text style={styles.topNavDateYear}>{this.state.focusYear}</Text>
                         <Text style={styles.topNavDateMonth}>{monthToString[this.state.focusMonth]}</Text>
                     </View>
                     <View>
-                        <TouchableHighlight
-                            onPress={() => console.log('touch'.this)}
+                        <TouchableOpacity
+                            onPress={() => console.log('touch',this)}
                             underlayColor='rgba(255,255,255,0.9)'
                         >
                             <Image
@@ -66,7 +67,7 @@ export default class MonthlyAgenda extends Component {
                                 style={styles.topNavIcon}
                                 width={28} height={28}
                             />
-                        </TouchableHighlight>
+                        </TouchableOpacity>
                     </View>
                 </View>
                 <Agenda
@@ -120,7 +121,11 @@ export default class MonthlyAgenda extends Component {
 
     renderItem(item) {
         return (
-            <View style={[styles.dayCard, {height: item.height}]}><DayCard/></View>
+            <View style={[styles.dayCard, {height: item.height}]}>
+                <DayCard
+                    thumbURI='http://image.toast.com/aaaaaxg/images/20190720_150746_128x128.jpg'
+                    imageTag="#America #Sanfrancisco #Sanjose #Coffee"/>
+            </View>
         );
     }
 
